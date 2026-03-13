@@ -1,0 +1,46 @@
+This is the FONTLOG file for the "Bloodie Curse" Font.
+
+
+This file provides detailed information on the "Bloodie Curse" Font Software.
+This information should be distributed along with the "Bloodie Curse" font
+and any derivative works.
+
+
+Basic Font Information
+
+"Bloodie Curse" Font is a Unicode typeface family that supports all languages
+that use the Latin script and its variants, and could be expanded to support
+other scripts.
+
+
+"Bloodie Curse" Font you'll find at: https://glottastudio.com
+
+"Bloodie Curse" Font is created with FontCreator.
+
+
+More specifically, this release supports the following Unicode ranges:
+
+ - Basic Latin and Controls 
+ - General Punctuation 
+ - Currency Symbols 
+ - Mathematical Operators 
+
+This release contains:
+
+ - Bloodie Curse .ttf
+ - Bloodie Curse .otf
+ - Bloodie Curse .woff
+ - SIL - OpenFont License.txt - official license text
+
+Acknowledgements
+
+If you make modifications be sure to add your name (N), email (E), web-address
+(if you have one) (W) and description (D).
+
+
+History
+
+This is my idea about horrors font styles.
+
+13 October 2023 (info@glottastudio.com)
+

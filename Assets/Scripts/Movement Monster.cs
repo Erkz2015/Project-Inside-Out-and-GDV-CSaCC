@@ -13,7 +13,7 @@ public enum MonsterState
 public class MovementMonster : MonoBehaviour
 {
     public Transform player;
-    public float radius = 2f;
+    public float radius = 40f;
 
     public UnityEvent monsterDefeatTrigger;
     public UnityEvent playerHeartBeatTrigger;

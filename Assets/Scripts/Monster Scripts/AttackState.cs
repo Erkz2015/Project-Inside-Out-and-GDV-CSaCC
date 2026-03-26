@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class AttackState : IMonsterState
+{
+    private MainMonster monster;
+    private float timer;
+
+    public AttackState(MainMonster monster)
+    {
+        this.monster = monster;
+    }
+
+    public void Enter()
+    {
+        timer = 0f;
+        monster.RandomizeAttack();
+        monster.audioController.PlayAttack();
+        monster.InvokeMonsterAttack();
+    }
+
+    public void Update()
+    {
+        timer += Time.deltaTime;
+
+        monster.UpdatePosition();
+
+        if (timer >= monster.attackDuration)
+        {
+            if (Random.value > 0.5f)
+                monster.ChangeState(new IdleState(monster));
+            else
+                monster.ChangeState(new MovingState(monster));
+        }
+    }
+
+    public void Exit()
+    {
+        monster.audioController.StopAttack();
+    }
+}

@@ -1,4 +1,3 @@
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,13 +13,23 @@ public class ScreenHealth : MonoBehaviour
 
     public float TargetRed = 1f;
 
-    public int HitCounter = 4;
+    public int HitCounter = 6;
 
     public UnityEvent GameOver;
 
     void Start()
     {
         IntensityVignette = 1f;
+    }
+
+    void OnEnable()
+    {
+        MainMonster.OnMonsterAttack += TakingDamage;
+    }
+
+    void OnDisable()
+    {
+        MainMonster.OnMonsterAttack -= TakingDamage;
     }
 
     void Update()
@@ -34,7 +43,7 @@ public class ScreenHealth : MonoBehaviour
 
     public void TakingDamage()
     {
-        TargetIntensity = IntensityVignette - 0.25f;
+        TargetIntensity = IntensityVignette - 0.15f;
         HitCounter--;
 
         if (HitCounter <= 0)

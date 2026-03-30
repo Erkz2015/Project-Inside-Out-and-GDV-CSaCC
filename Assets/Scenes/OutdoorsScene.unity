@@ -1827,9 +1827,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 636679759}
-  - component: {fileID: 636679758}
   - component: {fileID: 636679761}
   - component: {fileID: 636679760}
+  - component: {fileID: 636679763}
+  - component: {fileID: 636679762}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Monster
@@ -1837,88 +1838,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &636679758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636679757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d8fd8cb3cf041949b0df20d734ef6ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MovementMonster
-  player: {fileID: 597401016}
-  radius: 40
-  monsterDefeatTrigger:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 773049987}
-        m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
-        m_MethodName: EndScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 597401020}
-        m_TargetAssemblyTypeName: HeartBeat, Assembly-CSharp
-        m_MethodName: resetHeartBeatPhase
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  playerHeartBeatTrigger:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 597401020}
-        m_TargetAssemblyTypeName: HeartBeat, Assembly-CSharp
-        m_MethodName: nextHeartBeatPhase
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  monsterAttackingTrigger:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2032701610}
-        m_TargetAssemblyTypeName: ScreenHealth, Assembly-CSharp
-        m_MethodName: TakingDamage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  circlePercent: 0
-  MinRotSpeed: 20
-  MaxRotSpeed: 50
-  runningSpeedParameter: Running Speed
-  footstepsEmitter: {fileID: 1297674673}
-  scrapingEmitter: {fileID: 1785664707}
-  breathingEmmiter: {fileID: 757323130}
-  screechEmmiter: {fileID: 350923945}
-  hitEmmiter: {fileID: 711989958}
-  missEmmiter: {fileID: 141980548}
-  FinalHitEmmitter: {fileID: 459559247}
 --- !u!4 &636679759
 Transform:
   m_ObjectHideFlags: 0
@@ -1992,6 +1911,48 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &636679762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636679757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1d337e95e9ab94e932d2300231e49c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterAudio
+  footsteps: {fileID: 1297674673}
+  scraping: {fileID: 1785664707}
+  breathing: {fileID: 757323130}
+  attack: {fileID: 350923945}
+  hurt: {fileID: 711989958}
+  monsterDeath: {fileID: 459559247}
+  miss: {fileID: 141980548}
+--- !u!114 &636679763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636679757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb8d1529e15b3f46b232cc56f0a9795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMonster
+  player: {fileID: 597401016}
+  audioController: {fileID: 636679762}
+  radius: 40
+  MinRotSpeed: 20
+  MaxRotSpeed: 50
+  idleDuration: 0
+  movingDuration: 0
+  attackDuration: 0
+  hurtDuration: 3
+  angle: 0
+  rotationSpeed: 0
 --- !u!1 &645786253 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1778776706986478740, guid: 3fab9dcca6a961845a178028d664ab59, type: 3}
@@ -7244,7 +7205,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 773049985}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3ebf098a468d9841aa85332a1a26d3a, type: 3}
   m_Name: 
@@ -8502,7 +8463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1118611478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8520,6 +8481,8 @@ MonoBehaviour:
   breathing: {fileID: 0}
   attack: {fileID: 0}
   hurt: {fileID: 0}
+  monsterDeath: {fileID: 0}
+  miss: {fileID: 0}
 --- !u!114 &1118611479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8936,36 +8899,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f3163ca5acb8446b7d9cb0137ae4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunShot
-  leftmouseActionHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 636679758}
-        m_TargetAssemblyTypeName: MovementMonster, Assembly-CSharp
-        m_MethodName: HurtMonster
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  leftmouseActionMis:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 636679758}
-        m_TargetAssemblyTypeName: MovementMonster, Assembly-CSharp
-        m_MethodName: MissedMonster
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1135670615
 GameObject:
   m_ObjectHideFlags: 0
@@ -11364,7 +11297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2032701608
 MonoBehaviour:
   m_ObjectHideFlags: 0

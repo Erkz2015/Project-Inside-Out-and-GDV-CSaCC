@@ -29,9 +29,15 @@ public class MovingState : IMonsterState
         if (timer >= monster.movingDuration)
         {
             if (Random.value > 0.5f)
-                monster.ChangeState(new IdleState(monster));
+                monster.ChangeState(monster.idleState);
             else
-                monster.ChangeState(new AttackState(monster));
+                monster.ChangeState(monster.attackState);
+        }
+
+        if (monster.IsHurtPending())
+        {
+            monster.ChangeState(monster.hurtState);
+            return;
         }
     }
 

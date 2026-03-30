@@ -18,6 +18,16 @@ public class HeartBeat : MonoBehaviour
         resetTimer();
     }
 
+    void OnEnable()
+    {
+        MainMonster.OnMonsterHit += nextHeartBeatPhase;
+    }
+
+    void OnDisable()
+    {
+        MainMonster.OnMonsterHit -= nextHeartBeatPhase;
+    }
+
     void Update()
     {
         if (heartBeatPhase == 0)

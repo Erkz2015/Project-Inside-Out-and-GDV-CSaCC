@@ -41,6 +41,16 @@ public class ActionManager : MonoBehaviour
         StartScreen();
     }
 
+    void OnEnable()
+    {
+      MainMonster.OnMonsterDefeated += EndScreen;
+    }
+
+    void OnDisable()
+    {
+        MainMonster.OnMonsterDefeated -= EndScreen;
+    }
+
     void Update()
     {
 

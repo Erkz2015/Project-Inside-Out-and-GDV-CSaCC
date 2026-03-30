@@ -13,7 +13,15 @@ public class HurtState : IMonsterState
     public void Enter()
     {
         timer = 0f;
-        monster.audioController.PlayHurt();
+
+        if (monster.IsFinalHit())
+        {
+            monster.audioController.PlayDeath();
+        }
+        else
+        {
+            monster.audioController.PlayHurt();
+        }
     }
 
     public void Update()
@@ -24,7 +32,12 @@ public class HurtState : IMonsterState
 
         if (timer >= monster.hurtDuration)
         {
-            monster.ChangeState(new IdleState(monster));
+            monster.HandlePostHurt();
+
+            if (!monster.IsFinalHit())
+            {
+                monster.gameObject.SetActive(false);
+            }
         }
     }
 

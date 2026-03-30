@@ -8,6 +8,10 @@ public class MonsterAudio : MonoBehaviour
     public StudioEventEmitter breathing;
     public StudioEventEmitter attack;
     public StudioEventEmitter hurt;
+    public StudioEventEmitter monsterDeath;
+    public StudioEventEmitter miss;
+
+    public void PlayMiss() => miss.Play();
 
     public void PlayIdle() => breathing.Play();
     public void StopIdle() => breathing.Stop();
@@ -30,4 +34,6 @@ public class MonsterAudio : MonoBehaviour
 
     public void PlayHurt() => hurt.Play();
     public void StopHurt() => hurt.Stop();
+
+    public void PlayDeath() => monsterDeath.Play();
 }

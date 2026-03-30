@@ -22,14 +22,21 @@ public class AttackState : IMonsterState
     {
         timer += Time.deltaTime;
 
+        monster.angle += monster.rotationSpeed * Time.deltaTime;
         monster.UpdatePosition();
 
         if (timer >= monster.attackDuration)
         {
             if (Random.value > 0.5f)
-                monster.ChangeState(new IdleState(monster));
+                monster.ChangeState(monster.idleState);
             else
-                monster.ChangeState(new MovingState(monster));
+                monster.ChangeState(monster.movingState);
+        }
+
+        if (monster.IsHurtPending())
+        {
+            monster.ChangeState(monster.hurtState);
+            return;
         }
     }
 

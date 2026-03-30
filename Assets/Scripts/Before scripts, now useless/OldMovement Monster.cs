@@ -46,7 +46,7 @@ public class MovementMonster : MonoBehaviour
     public StudioEventEmitter missEmmiter;
     public StudioEventEmitter FinalHitEmmitter;
     private int hurtTimes = 0;
-    private int hurtGoal = 6;
+    private int hurtGoal = 3;
     bool movingIsPlaying;
     bool idleIsPlaying;
     bool attackingIsPlaying;
@@ -193,7 +193,7 @@ public class MovementMonster : MonoBehaviour
             hurtIsPlaying = true;
         } else if (!hurtIsPlaying && hurtTimes >= hurtGoal)
         {
-            FinalHitEmmitter.Play();
+            FinalHitEmmitter.Play();    
             hurtIsPlaying = true;
         }
 
@@ -211,11 +211,11 @@ public class MovementMonster : MonoBehaviour
             circlePercent = targetPercent % 100f;
             ResetTime();
 
-            if (hurtTimes == 2)
+            if (hurtTimes == 1)
             {
                 playerHeartBeatTrigger.Invoke();
             } 
-            else if (hurtTimes == 4)
+            else if (hurtTimes == 2)
             {
                 playerHeartBeatTrigger.Invoke();
             }

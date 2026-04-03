@@ -13,7 +13,7 @@ public class ScreenHealth : MonoBehaviour
 
     public float TargetRed = 1f;
 
-    public int HitCounter = 6;
+    public int HitCounter = 5;
 
     public UnityEvent GameOver;
 
@@ -43,7 +43,7 @@ public class ScreenHealth : MonoBehaviour
 
     public void TakingDamage()
     {
-        TargetIntensity = IntensityVignette - 0.15f;
+        TargetIntensity = IntensityVignette - 0.20f;
         HitCounter--;
 
         if (HitCounter <= 0)

@@ -1944,7 +1944,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMonster
   player: {fileID: 597401016}
   audioController: {fileID: 636679762}
-  radius: 40
   MinRotSpeed: 20
   MaxRotSpeed: 50
   idleDuration: 0
@@ -1953,6 +1952,8 @@ MonoBehaviour:
   hurtDuration: 3
   angle: 0
   rotationSpeed: 0
+  hurtTimes: 0
+  hurtGoal: 4
 --- !u!1 &645786253 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1778776706986478740, guid: 3fab9dcca6a961845a178028d664ab59, type: 3}
@@ -8497,7 +8498,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMonster
   player: {fileID: 597401016}
   audioController: {fileID: 1118611478}
-  radius: 40
   MinRotSpeed: 20
   MaxRotSpeed: 50
   idleDuration: 0
@@ -8506,6 +8506,8 @@ MonoBehaviour:
   hurtDuration: 3
   angle: 0
   rotationSpeed: 0
+  hurtTimes: 0
+  hurtGoal: 4
 --- !u!65 &1118611480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9093,6 +9095,8 @@ MonoBehaviour:
   rotationSpeed: 15
   dampingTime: 0.15
   MouseInvis: 0
+  shakeDuration: 0.15
+  shakeRotationStrength: 3
 --- !u!1 &1192827128
 GameObject:
   m_ObjectHideFlags: 0
@@ -11367,7 +11371,7 @@ MonoBehaviour:
   TargetIntensity: 1
   redValue: 0
   TargetRed: 1
-  HitCounter: 4
+  HitCounter: 5
   GameOver:
     m_PersistentCalls:
       m_Calls:

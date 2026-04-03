@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class MonsterAudio : MonoBehaviour
 {
-    public StudioEventEmitter footsteps;
-    public StudioEventEmitter scraping;
-    public StudioEventEmitter breathing;
-    public StudioEventEmitter attack;
-    public StudioEventEmitter hurt;
-    public StudioEventEmitter monsterDeath;
-    public StudioEventEmitter miss;
+    [SerializeField] private StudioEventEmitter footsteps;
+    [SerializeField] private StudioEventEmitter scraping;
+    [SerializeField] private StudioEventEmitter breathing;
+    [SerializeField] private StudioEventEmitter attack;
+    [SerializeField] private StudioEventEmitter hurt;
+    [SerializeField] private StudioEventEmitter monsterDeath;
+    [SerializeField] private StudioEventEmitter miss;
 
     public void PlayMiss() => miss.Play();
 

@@ -31,28 +31,8 @@ public class SwayNBobScript : MonoBehaviour
     public Vector3 multiplier;
     Vector3 bobEulerRotation;
 
-    [Header("Hit Shake")]
-    public float shakeDuration = 0.2f;
-    public float shakeStrength = 0.1f;
-    public float shakeRotationStrength = 5f;
-
-    float currentShakeTime;
-    Vector3 shakePos;
-    Vector3 shakeRot;
-
     Vector2 walkInput;
     Vector2 lookInput;
-
-
-    void OnEnable()
-    {
-        MainMonster.OnMonsterAttack += TriggerShake;
-    }
-
-    void OnDisable()
-    {
-        MainMonster.OnMonsterAttack -= TriggerShake;
-    }
 
     void Update()
     {
@@ -62,8 +42,6 @@ public class SwayNBobScript : MonoBehaviour
         SwayRotation();
         BobOffset();
         BobRotation();
-
-        HandleShake();
 
         CompositePositionRotation();
     }
@@ -98,6 +76,7 @@ public class SwayNBobScript : MonoBehaviour
         Vector2 invertLook = lookInput * -rotationStep;
         invertLook.x = Mathf.Clamp(invertLook.x, -maxRotationStep, maxRotationStep);
         invertLook.y = Mathf.Clamp(invertLook.y, -maxRotationStep, maxRotationStep);
+
         swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
     }
 
@@ -118,51 +97,13 @@ public class SwayNBobScript : MonoBehaviour
         bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
     }
 
-    void HandleShake()
-    {
-        if (currentShakeTime > 0)
-        {
-            currentShakeTime -= Time.deltaTime;
-
-            float shakeAmount = currentShakeTime / shakeDuration;
-
-            shakePos = new Vector3(
-                Random.Range(-1f, 1f) * shakeStrength * shakeAmount,
-                Random.Range(-0.5f, 0.5f) * shakeStrength * shakeAmount,
-                0
-            );
-
-            shakeRot = new Vector3(
-                Random.Range(-1f, 1f) * shakeRotationStrength * shakeAmount,
-                Random.Range(-1f, 1f) * shakeRotationStrength * shakeAmount,
-                Random.Range(-1f, 1f) * shakeRotationStrength * shakeAmount
-            );
-        }
-        else
-        {
-            shakePos = Vector3.Lerp(shakePos, Vector3.zero, Time.deltaTime * 10f);
-            shakeRot = Vector3.Lerp(shakeRot, Vector3.zero, Time.deltaTime * 10f);
-        }
-    }
-
-    public void TriggerShake()
-    {
-        float strengthMultiplier = 5f;
-
-        currentShakeTime = shakeDuration;
-
-        shakeStrength *= strengthMultiplier;
-        shakeRotationStrength *= strengthMultiplier;
-    }
-
     void CompositePositionRotation()
     {
-        Vector3 finalPos = swayPos + bobPosition + shakePos;
+        Vector3 finalPos = swayPos + bobPosition;
 
         Quaternion finalRot =
             Quaternion.Euler(swayEulerRot) *
-            Quaternion.Euler(bobEulerRotation) *
-            Quaternion.Euler(shakeRot);
+            Quaternion.Euler(bobEulerRotation);
 
         transform.localPosition = Vector3.Lerp(transform.localPosition, finalPos, Time.deltaTime * smooth);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, finalRot, Time.deltaTime * smoothRot);

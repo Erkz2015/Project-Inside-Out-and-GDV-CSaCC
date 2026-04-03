@@ -4,11 +4,11 @@ using System;
 public class MainMonster : MonoBehaviour
 {
     [Header("References")]
-    public Transform player;
+    [SerializeField] private Transform player;
     public MonsterAudio audioController;
 
     [Header("Movement")]
-    public float radius = 40f;
+    private float radius = 40f;
     public float MinRotSpeed = 20f;
     public float MaxRotSpeed = 50f;
 
@@ -32,8 +32,8 @@ public class MainMonster : MonoBehaviour
     [HideInInspector] public float angle;
     [HideInInspector] public float rotationSpeed;
 
-    private int hurtTimes = 0;
-    private int hurtGoal = 6;//alleen stapjes van 3 graag!
+    [SerializeField] private int hurtTimes = 0;
+    [SerializeField] private int hurtGoal = 4;
 
     private bool hurtPending = false;
 
@@ -76,6 +76,7 @@ public class MainMonster : MonoBehaviour
 
     public void UpdatePosition()
     {
+        //zorgt ervoor dat de monster rond de speler draait op een cirkelvormig pad
         float x = Mathf.Cos(angle * Mathf.Deg2Rad) * radius;
         float z = Mathf.Sin(angle * Mathf.Deg2Rad) * radius;
         transform.position = player.position + new Vector3(x, 0f, z);
@@ -109,7 +110,7 @@ public class MainMonster : MonoBehaviour
 
     public void HandlePostHurt()
     {
-        if (hurtTimes == hurtGoal / 3 || hurtTimes == (hurtGoal / 3) * 2)
+        if (hurtTimes == hurtGoal / 4 || hurtTimes == (hurtGoal / 4) * 2)
         {
             OnMonsterHit?.Invoke();
         }

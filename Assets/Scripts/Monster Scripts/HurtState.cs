@@ -36,6 +36,12 @@ public class HurtState : IMonsterState
 
             if (!monster.IsFinalHit())
             {
+                if (Random.value > 0.5f)
+                    monster.ChangeState(monster.idleState);
+                else
+                    monster.ChangeState(monster.attackState);
+            } else
+            {
                 monster.gameObject.SetActive(false);
             }
         }

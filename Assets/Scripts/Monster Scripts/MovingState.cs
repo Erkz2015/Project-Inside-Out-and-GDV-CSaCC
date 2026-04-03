@@ -14,6 +14,8 @@ public class MovingState : IMonsterState
     {
         timer = 0f;
         monster.RandomizeMovement();
+
+        // De variable van het geluid isntellen op basis van de rotatie/loop snelheid van het monster
         float r = Mathf.InverseLerp(monster.MinRotSpeed, monster.MaxRotSpeed, monster.rotationSpeed);
         float parameterValue = Mathf.Lerp(0f, 2f, r);
         monster.audioController.PlayMovement(parameterValue);

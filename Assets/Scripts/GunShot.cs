@@ -8,10 +8,11 @@ public class GunShot : MonoBehaviour
     public static event Action leftmouseActionHit;
     public static event Action leftmouseActionMis;
     private bool monsterInside = false;
+    [SerializeField] private string hitTag = "Monster";
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Monster"))
+        if (other.CompareTag(hitTag))
         {
             monsterInside = true;
         }
@@ -20,7 +21,7 @@ public class GunShot : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Monster"))
+        if (other.CompareTag(hitTag))
         {
             monsterInside = false;
         }

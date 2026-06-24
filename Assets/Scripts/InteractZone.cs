@@ -6,16 +6,17 @@ public class InteractZone : MonoBehaviour
 {
     public UnityEvent leftmouseAction; 
     private bool playerInside = false;
+    [SerializeField] private string targetTag = "Player";
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(targetTag))
             playerInside = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(targetTag))
             playerInside = false;
     }
 

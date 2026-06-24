@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class AttackState : IMonsterState
+public class AttackState : IState
 {
-    private MainMonster monster;
+    private IMonsterContext monster;
     private float timer;
 
-    public AttackState(MainMonster monster)
+    public AttackState(IMonsterContext monster)
     {
         this.monster = monster;
     }
@@ -14,7 +14,7 @@ public class AttackState : IMonsterState
     {
         timer = 0f;
         monster.RandomizeAttack();
-        monster.audioController.PlayAttack();
+        monster.Audio.PlayAttack();
         monster.InvokeMonsterAttack();
     }
 
@@ -22,26 +22,25 @@ public class AttackState : IMonsterState
     {
         timer += Time.deltaTime;
 
-        monster.angle += monster.rotationSpeed * Time.deltaTime;
+        monster.Angle += monster.RotationSpeed * Time.deltaTime;
         monster.UpdatePosition();
 
-        if (timer >= monster.attackDuration)
+        if (timer >= monster.AttackDuration)
         {
             if (Random.value > 0.5f)
-                monster.ChangeState(monster.idleState);
+                monster.ChangeState(new IdleState(monster));
             else
-                monster.ChangeState(monster.movingState);
+                monster.ChangeState(new MovingState(monster));
         }
 
         if (monster.IsHurtPending())
         {
-            monster.ChangeState(monster.hurtState);
-            return;
+            monster.ChangeState(new HurtState(monster));
         }
     }
 
     public void Exit()
     {
-        monster.audioController.StopAttack();
+        monster.Audio.StopAttack();
     }
 }

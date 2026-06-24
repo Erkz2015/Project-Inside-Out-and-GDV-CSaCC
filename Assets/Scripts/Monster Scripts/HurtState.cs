@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class HurtState : IMonsterState
+public class HurtState : IState
 {
-    private MainMonster monster;
+    private IMonsterContext monster;
     private float timer;
 
-    public HurtState(MainMonster monster)
+    public HurtState(IMonsterContext monster)
     {
         this.monster = monster;
     }
@@ -15,13 +15,9 @@ public class HurtState : IMonsterState
         timer = 0f;
 
         if (monster.IsFinalHit())
-        {
-            monster.audioController.PlayDeath();
-        }
+            monster.Audio.PlayDeath();
         else
-        {
-            monster.audioController.PlayHurt();
-        }
+            monster.Audio.PlayHurt();
     }
 
     public void Update()
@@ -30,25 +26,26 @@ public class HurtState : IMonsterState
 
         monster.UpdatePosition();
 
-        if (timer >= monster.hurtDuration)
+        if (timer >= monster.HurtDuration)
         {
             monster.HandlePostHurt();
 
             if (!monster.IsFinalHit())
             {
                 if (Random.value > 0.5f)
-                    monster.ChangeState(monster.idleState);
+                    monster.ChangeState(new IdleState(monster));
                 else
-                    monster.ChangeState(monster.attackState);
-            } else
+                    monster.ChangeState(new AttackState(monster));
+            }
+            else
             {
-                monster.gameObject.SetActive(false);
+                ((MainMonster)monster).gameObject.SetActive(false);
             }
         }
     }
 
     public void Exit()
     {
-        monster.audioController.StopHurt();
+        monster.Audio.StopHurt();
     }
 }

@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class IdleState : IMonsterState
+public class IdleState : IState
 {
-    private MainMonster monster;
+    private IMonsterContext monster;
     private float timer;
 
-    public IdleState(MainMonster monster)
+    public IdleState(IMonsterContext monster)
     {
         this.monster = monster;
     }
@@ -14,30 +14,29 @@ public class IdleState : IMonsterState
     {
         timer = 0f;
         monster.RandomizeIdleDuration();
-        monster.audioController.PlayIdle();
+        monster.Audio.PlayIdle();
     }
 
     public void Update()
     {
         timer += Time.deltaTime;
 
-        if (timer >= monster.idleDuration)
+        if (timer >= monster.IdleDuration)
         {
             if (Random.value > 0.5f)
-                monster.ChangeState(monster.movingState);
+                monster.ChangeState(new MovingState(monster));
             else
-                monster.ChangeState(monster.attackState);
+                monster.ChangeState(new AttackState(monster));
         }
 
         if (monster.IsHurtPending())
         {
-            monster.ChangeState(monster.hurtState);
-            return;
+            monster.ChangeState(new HurtState(monster));
         }
     }
 
     public void Exit()
     {
-        monster.audioController.StopIdle();
+        monster.Audio.StopIdle();
     }
 }

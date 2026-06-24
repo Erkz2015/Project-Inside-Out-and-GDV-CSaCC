@@ -1,16 +1,17 @@
 using UnityEngine;
 using System;
 
-public class MainMonster : MonoBehaviour
+public class MainMonster : MonoBehaviour, IMonsterContext
 {
     [Header("References")]
     [SerializeField] private Transform player;
-    public MonsterAudio audioController;
+    [SerializeField] private MonsterAudio audioController;
 
     [Header("Movement")]
-    private float radius = 40f;
-    public float MinRotSpeed = 20f;
-    public float MaxRotSpeed = 50f;
+    [SerializeField] private float radius = 40f;
+
+    [SerializeField] private float minRotSpeed = 20f;
+    [SerializeField] private float maxRotSpeed = 50f;
 
     [Header("Durations")]
     public float idleDuration;
@@ -22,72 +23,75 @@ public class MainMonster : MonoBehaviour
     public static event Action OnMonsterHit;
     public static event Action OnMonsterAttack;
 
-    [HideInInspector] public IdleState idleState;
-    [HideInInspector] public MovingState movingState;
-    [HideInInspector] public AttackState attackState;
-    [HideInInspector] public HurtState hurtState;
+    private StateMachine stateMachine;
 
-    private IMonsterState currentState;
+    public IdleState idleState;
+    public MovingState movingState;
+    public AttackState attackState;
+    public HurtState hurtState;
 
-    [HideInInspector] public float angle;
-    [HideInInspector] public float rotationSpeed;
+    private float angle;
+    private float rotationSpeed;
 
-    [SerializeField] private int hurtTimes = 0;
-    [SerializeField] private int hurtGoal = 4;
+    private int hurtTimes = 0;
+    private int hurtGoal = 4;
+    private bool hurtPending;
 
-    private bool hurtPending = false;
-
-    void Awake()
+    private void Awake()
     {
+        stateMachine = new StateMachine();
+
         idleState = new IdleState(this);
         movingState = new MovingState(this);
         attackState = new AttackState(this);
         hurtState = new HurtState(this);
     }
 
-    void Start()
+    private void Start()
     {
         ChangeState(movingState);
     }
 
-    void OnEnable()
+    private void Update()
+    {
+        stateMachine.Update();
+    }
+
+    private void OnEnable()
     {
         GunShot.leftmouseActionHit += HurtMonster;
         GunShot.leftmouseActionMis += MissMonster;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         GunShot.leftmouseActionHit -= HurtMonster;
         GunShot.leftmouseActionMis -= MissMonster;
     }
 
-    void Update()
+    // STATE MACHINE WRAPPER
+    public void ChangeState(IState newState)
     {
-        currentState?.Update();
+        stateMachine.ChangeState(newState);
     }
 
-    public void ChangeState(IMonsterState newState)
-    {
-        currentState?.Exit();
-        currentState = newState;
-        currentState.Enter();
-    }
-
+    // POSITION
     public void UpdatePosition()
     {
-        //zorgt ervoor dat de monster rond de speler draait op een cirkelvormig pad
         float x = Mathf.Cos(angle * Mathf.Deg2Rad) * radius;
         float z = Mathf.Sin(angle * Mathf.Deg2Rad) * radius;
+
         transform.position = player.position + new Vector3(x, 0f, z);
     }
 
+    // RANDOMNESS
     public void RandomizeMovement()
     {
         movingDuration = UnityEngine.Random.Range(3f, 5.5f);
+        rotationSpeed = UnityEngine.Random.Range(minRotSpeed, maxRotSpeed);
 
-        rotationSpeed = UnityEngine.Random.Range(MinRotSpeed, MaxRotSpeed);
-        if (UnityEngine.Random.value > 0.5f) rotationSpeed *= -1;
+        if (UnityEngine.Random.value > 0.5f)
+            rotationSpeed *= -1;
     }
 
     public void RandomizeIdleDuration()
@@ -100,31 +104,12 @@ public class MainMonster : MonoBehaviour
         attackDuration = UnityEngine.Random.Range(0.75f, 1.25f);
 
         rotationSpeed = 180f / attackDuration;
-        if (UnityEngine.Random.value > 0.5f) rotationSpeed *= -1;
+
+        if (UnityEngine.Random.value > 0.5f)
+            rotationSpeed *= -1;
     }
 
-    public void MissMonster()
-    {
-        audioController.PlayMiss();
-    }
-
-    public void HandlePostHurt()
-    {
-        if (hurtTimes == hurtGoal / 4 || hurtTimes == (hurtGoal / 4) * 2)
-        {
-            OnMonsterHit?.Invoke();
-        }
-        else if (hurtTimes >= hurtGoal)
-        {
-            OnMonsterDefeated?.Invoke();
-        }
-    }
-
-    public bool IsFinalHit()
-    {
-        return hurtTimes >= hurtGoal;
-    }
-
+    // COMBAT
     public void HurtMonster()
     {
         hurtTimes++;
@@ -141,8 +126,72 @@ public class MainMonster : MonoBehaviour
         return false;
     }
 
+    public bool IsFinalHit()
+    {
+        return hurtTimes >= hurtGoal;
+    }
+
+    public void HandlePostHurt()
+    {
+        if (hurtTimes == hurtGoal / 4 ||
+            hurtTimes == (hurtGoal / 4) * 2)
+        {
+            OnMonsterHit?.Invoke();
+        }
+        else if (hurtTimes >= hurtGoal)
+        {
+            OnMonsterDefeated?.Invoke();
+        }
+    }
+
     public void InvokeMonsterAttack()
     {
         OnMonsterAttack?.Invoke();
     }
+
+    public void MissMonster()
+    {
+        audioController.PlayMiss();
+    }
+
+    // ===== IMonsterContext =====
+
+    public float MinRotSpeed => minRotSpeed;
+    public float MaxRotSpeed => maxRotSpeed;
+
+    public float Angle
+    {
+        get => angle;
+        set => angle = value;
+    }
+
+    public float RotationSpeed
+    {
+        get => rotationSpeed;
+        set => rotationSpeed = value;
+    }
+
+    public float IdleDuration
+    {
+        get => idleDuration;
+        set => idleDuration = value;
+    }
+
+    public float MovingDuration
+    {
+        get => movingDuration;
+        set => movingDuration = value;
+    }
+
+    public float AttackDuration
+    {
+        get => attackDuration;
+        set => attackDuration = value;
+    }
+
+    public float HurtDuration => hurtDuration;
+
+    public MonsterAudio Audio => audioController;
+
+    public Transform Player => player;
 }

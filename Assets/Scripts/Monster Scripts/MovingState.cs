@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class MovingState : IMonsterState
+public class MovingState : IState
 {
-    private MainMonster monster;
+    private IMonsterContext monster;
     private float timer;
 
-    public MovingState(MainMonster monster)
+    public MovingState(IMonsterContext monster)
     {
         this.monster = monster;
     }
@@ -15,36 +15,35 @@ public class MovingState : IMonsterState
         timer = 0f;
         monster.RandomizeMovement();
 
-        // De variable van het geluid isntellen op basis van de rotatie/loop snelheid van het monster
-        float r = Mathf.InverseLerp(monster.MinRotSpeed, monster.MaxRotSpeed, monster.rotationSpeed);
+        float r = Mathf.InverseLerp(monster.MinRotSpeed, monster.MaxRotSpeed, monster.RotationSpeed);
         float parameterValue = Mathf.Lerp(0f, 2f, r);
-        monster.audioController.PlayMovement(parameterValue);
+
+        monster.Audio.PlayMovement(parameterValue);
     }
 
     public void Update()
     {
         timer += Time.deltaTime;
 
-        monster.angle += monster.rotationSpeed * Time.deltaTime;
+        monster.Angle += monster.RotationSpeed * Time.deltaTime;
         monster.UpdatePosition();
 
-        if (timer >= monster.movingDuration)
+        if (timer >= monster.MovingDuration)
         {
             if (Random.value > 0.5f)
-                monster.ChangeState(monster.idleState);
+                monster.ChangeState(new IdleState(monster));
             else
-                monster.ChangeState(monster.attackState);
+                monster.ChangeState(new AttackState(monster));
         }
 
         if (monster.IsHurtPending())
         {
-            monster.ChangeState(monster.hurtState);
-            return;
+            monster.ChangeState(new HurtState(monster));
         }
     }
 
     public void Exit()
     {
-        monster.audioController.StopMovement();
+        monster.Audio.StopMovement();
     }
 }

@@ -1,4 +1,4 @@
-public interface IMonsterState
+public interface IState
 {
     void Enter();
     void Update();

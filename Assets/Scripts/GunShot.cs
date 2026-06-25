@@ -16,7 +16,6 @@ public class GunShot : MonoBehaviour
         {
             monsterInside = true;
         }
-
     }
 
     private void OnTriggerExit(Collider other)

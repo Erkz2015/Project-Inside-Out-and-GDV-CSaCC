@@ -1944,16 +1944,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMonster
   player: {fileID: 597401016}
   audioController: {fileID: 636679762}
-  MinRotSpeed: 20
-  MaxRotSpeed: 50
+  radius: 40
+  minRotSpeed: 20
+  maxRotSpeed: 50
   idleDuration: 0
   movingDuration: 0
   attackDuration: 0
   hurtDuration: 3
-  angle: 0
-  rotationSpeed: 0
-  hurtTimes: 0
-  hurtGoal: 4
 --- !u!1 &645786253 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1778776706986478740, guid: 3fab9dcca6a961845a178028d664ab59, type: 3}
@@ -7169,9 +7166,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 773049986}
-  - component: {fileID: 773049987}
+  - component: {fileID: 773049990}
+  - component: {fileID: 773049988}
   m_Layer: 0
-  m_Name: Main Game
+  m_Name: Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7199,7 +7197,7 @@ Transform:
   - {fileID: 2032701609}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &773049987
+--- !u!114 &773049988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7208,9 +7206,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 773049985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ebf098a468d9841aa85332a1a26d3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 47a1e884063ded3448572d95ab3c9f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameStateManager
+--- !u!114 &773049990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773049985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d26642f86affe4d9962a39e81afdd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionManager
+  stateManager: {fileID: 773049988}
   weapon: {fileID: 130531391}
   flashlight: {fileID: 843687435}
   building: {fileID: 977462977}
@@ -7228,10 +7239,10 @@ MonoBehaviour:
   gunShot: {fileID: 1134029021}
   menuMusicEmitter: {fileID: 18474954}
   happySoundEmitter: {fileID: 645786254}
-  UnnervingMusicEmmiter: {fileID: 534272807}
-  TransitionToMonsterEmmiter: {fileID: 771097567}
-  SlowBreathinhgEmmiter: {fileID: 1345410472}
-  FastBreathingEmmiter: {fileID: 187241808}
+  unnervingMusicEmitter: {fileID: 534272807}
+  transitionToMonsterEmitter: {fileID: 771097567}
+  slowBreathingEmitter: {fileID: 1345410472}
+  fastBreathingEmitter: {fileID: 187241808}
   MouseInvisSwitch:
     m_PersistentCalls:
       m_Calls:
@@ -7498,7 +7509,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 773049987}
+      - m_Target: {fileID: 773049990}
         m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -8498,16 +8509,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMonster
   player: {fileID: 597401016}
   audioController: {fileID: 1118611478}
-  MinRotSpeed: 20
-  MaxRotSpeed: 50
+  radius: 40
+  minRotSpeed: 20
+  maxRotSpeed: 50
   idleDuration: 0
   movingDuration: 0
   attackDuration: 0
   hurtDuration: 3
-  angle: 0
-  rotationSpeed: 0
-  hurtTimes: 0
-  hurtGoal: 4
 --- !u!65 &1118611480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8901,6 +8909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f3163ca5acb8446b7d9cb0137ae4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunShot
+  hitTag: Monster
 --- !u!1 &1135670615
 GameObject:
   m_ObjectHideFlags: 0
@@ -9246,9 +9255,9 @@ MonoBehaviour:
   leftmouseAction:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 773049987}
+      - m_Target: {fileID: 773049990}
         m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
-        m_MethodName: StartMonsterTransition
+        m_MethodName: TriggerMonsterTransition
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9270,6 +9279,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  targetTag: Player
 --- !u!135 &1234356286
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11375,9 +11385,9 @@ MonoBehaviour:
   GameOver:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 773049987}
+      - m_Target: {fileID: 773049990}
         m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
-        m_MethodName: GameOverScreen
+        m_MethodName: TriggerGameOver
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11468,7 +11478,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 773049987}
+      - m_Target: {fileID: 773049990}
         m_TargetAssemblyTypeName: ActionManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1

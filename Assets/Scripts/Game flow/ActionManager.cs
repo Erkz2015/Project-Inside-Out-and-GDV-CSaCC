@@ -1,10 +1,12 @@
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 public class ActionManager : MonoBehaviour
 {
+    [Header("State Manager")]
+    [SerializeField] private GameStateManager stateManager;
+
     [Header("Objects")]
     public GameObject weapon;
     public GameObject flashlight;
@@ -15,70 +17,116 @@ public class ActionManager : MonoBehaviour
     public GameObject EndText;
     public GameObject GameOverText;
     public GameObject StartButton;
-    //public GameObject ResetButton;
     public GameObject dust;
     public GameObject playerLightOne;
     public GameObject playerLightTwo;
+
     [Header("Scripts")]
     public PlayerMovement playerMovement;
     public GunShotAnimation gunShotAnimation;
     public GunShot gunShot;
-    [Header("SoundEmmitters")]
+
+    [Header("Sound Emitters")]
     public StudioEventEmitter menuMusicEmitter;
     public StudioEventEmitter happySoundEmitter;
-    public StudioEventEmitter UnnervingMusicEmmiter;
-    public StudioEventEmitter TransitionToMonsterEmmiter;
-    public StudioEventEmitter SlowBreathinhgEmmiter;
-    public StudioEventEmitter FastBreathingEmmiter;
+    public StudioEventEmitter unnervingMusicEmitter;
+    public StudioEventEmitter transitionToMonsterEmitter;
+    public StudioEventEmitter slowBreathingEmitter;
+    public StudioEventEmitter fastBreathingEmitter;
 
     public UnityEvent MouseInvisSwitch;
 
-    float timer = 0f;
-    bool monsterIsTransitioning = false;
+    private float timer;
+    private bool monsterIsTransitioning;
 
-    void Start()
+    private void OnEnable()
     {
-        StartScreen();
+        GameStateManager.OnGameStateChanged += HandleStateChange;
+        MainMonster.OnMonsterDefeated += EndScreenEvent;
     }
 
-    void OnEnable()
+    private void OnDisable()
     {
-      MainMonster.OnMonsterDefeated += EndScreen;
+        GameStateManager.OnGameStateChanged -= HandleStateChange;
+        MainMonster.OnMonsterDefeated -= EndScreenEvent;
     }
 
-    void OnDisable()
+    private void Update()
     {
-        MainMonster.OnMonsterDefeated -= EndScreen;
-    }
+        if (!monsterIsTransitioning)
+            return;
 
-    void Update()
-    {
+        timer += Time.deltaTime;
 
-        if(monsterIsTransitioning)
+        if (timer >= 25f)
         {
-            timer += Time.deltaTime;
-            if (timer >= 25f)
-            {
-                TeleportMonster();
-                monsterIsTransitioning = false;
-                timer = 0f;
-            }
-
+            TeleportMonster();
+            monsterIsTransitioning = false;
+            timer = 0f;
         }
     }
 
-    public void StartScreen()
+    private void HandleStateChange(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.StartScreen:
+                StartScreen();
+                break;
+
+            case GameState.Playing:
+                StartGame();
+                break;
+
+            case GameState.TransitionToMonster:
+                StartMonsterTransition();
+                break;
+
+            case GameState.EndScreen:
+                EndScreen();
+                break;
+
+            case GameState.GameOver:
+                GameOverScreen();
+                break;
+        }
+    }
+
+    public void StartButtonPressed()
+    {
+        stateManager.SetState(GameState.Playing);
+    }
+
+    public void TriggerMonsterTransition()
+    {
+        stateManager.SetState(GameState.TransitionToMonster);
+    }
+
+    private void EndScreenEvent()
+    {
+        stateManager.SetState(GameState.EndScreen);
+    }
+
+    public void TriggerGameOver()
+    {
+        stateManager.SetState(GameState.GameOver);
+    }
+
+    private void StartScreen()
     {
         weapon.SetActive(false);
         flashlight.SetActive(false);
         building.SetActive(false);
         monster.SetActive(false);
+
         menu.SetActive(true);
+
         EndText.SetActive(false);
         GameOverText.SetActive(false);
+
         TitleText.SetActive(true);
         StartButton.SetActive(true);
-        //ResetButton.SetActive(false);
+
         dust.SetActive(true);
 
         playerMovement.enabled = false;
@@ -88,89 +136,104 @@ public class ActionManager : MonoBehaviour
         menuMusicEmitter.Play();
     }
 
-    public void EndScreen()
+    private void EndScreen()
     {
         weapon.SetActive(false);
         monster.SetActive(false);
+
         menu.SetActive(true);
+
         TitleText.SetActive(false);
         StartButton.SetActive(false);
-        //ResetButton.SetActive(true);
+
         EndText.SetActive(true);
         GameOverText.SetActive(false);
 
         playerMovement.enabled = false;
+
         MouseInvisSwitch.Invoke();
+
         gunShotAnimation.enabled = false;
         gunShot.enabled = false;
 
-        FastBreathingEmmiter.Stop();
+        fastBreathingEmitter.Stop();
     }
 
-    public void GameOverScreen()
+    private void GameOverScreen()
     {
         weapon.SetActive(false);
         monster.SetActive(false);
+
         menu.SetActive(true);
+
         TitleText.SetActive(false);
         StartButton.SetActive(false);
-        //ResetButton.SetActive(true);
-        GameOverText.SetActive(false);
+
+        EndText.SetActive(false);
         GameOverText.SetActive(true);
 
-        playerMovement.enabled = false; 
+        playerMovement.enabled = false;
+
         MouseInvisSwitch.Invoke();
+
         gunShotAnimation.enabled = false;
         gunShot.enabled = false;
 
-        FastBreathingEmmiter.Stop();
+        fastBreathingEmitter.Stop();
     }
 
-    public void StartGame()
+    private void StartGame()
     {
         flashlight.SetActive(true);
         building.SetActive(true);
+
         menu.SetActive(false);
         dust.SetActive(false);
 
         playerMovement.enabled = true;
+
         MouseInvisSwitch.Invoke();
 
         menuMusicEmitter.Stop();
+
         happySoundEmitter.Play();
-        SlowBreathinhgEmmiter.Play();
+        slowBreathingEmitter.Play();
     }
 
-    public void StartMonsterTransition()
+    private void StartMonsterTransition()
     {
         monsterIsTransitioning = true;
 
         playerMovement.enabled = false;
 
-        TransitionToMonsterEmmiter.Play();
+        transitionToMonsterEmitter.Play();
+
         happySoundEmitter.Stop();
-        SlowBreathinhgEmmiter.Stop();
+        slowBreathingEmitter.Stop();
 
         playerLightOne.SetActive(false);
         playerLightTwo.SetActive(false);
+
         flashlight.SetActive(false);
         building.SetActive(false);
-
     }
 
-    public void TeleportMonster()
+    private void TeleportMonster()
     {
         dust.SetActive(true);
+
         monster.SetActive(true);
         weapon.SetActive(true);
+
         playerLightOne.SetActive(true);
-        playerLightTwo.SetActive(true); 
+        playerLightTwo.SetActive(true);
 
         gunShotAnimation.enabled = true;
         gunShot.enabled = true;
+
         playerMovement.enabled = true;
 
-        UnnervingMusicEmmiter.Play();
-        FastBreathingEmmiter.Play();
+        unnervingMusicEmitter.Play();
+        fastBreathingEmitter.Play();
     }
 }

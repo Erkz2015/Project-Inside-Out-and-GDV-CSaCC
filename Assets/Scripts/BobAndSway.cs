@@ -46,7 +46,7 @@ public class SwayNBobScript : MonoBehaviour
         CompositePositionRotation();
     }
 
-    void GetInput()
+    private void GetInput()
     {
         float x = 0f;
         float y = 0f;
@@ -62,7 +62,7 @@ public class SwayNBobScript : MonoBehaviour
         lookInput = mouseDelta;
     }
 
-    void Sway()
+    private void Sway()
     {
         Vector3 invertLook = lookInput * -step;
         invertLook.x = Mathf.Clamp(invertLook.x, -maxStepDistance, maxStepDistance);
@@ -71,7 +71,7 @@ public class SwayNBobScript : MonoBehaviour
         swayPos = invertLook;
     }
 
-    void SwayRotation()
+    private void SwayRotation()
     {
         Vector2 invertLook = lookInput * -rotationStep;
         invertLook.x = Mathf.Clamp(invertLook.x, -maxRotationStep, maxRotationStep);
@@ -80,7 +80,7 @@ public class SwayNBobScript : MonoBehaviour
         swayEulerRot = new Vector3(invertLook.y, invertLook.x, invertLook.x);
     }
 
-    void BobOffset()
+    private void BobOffset()
     {
         float moveAmount = walkInput.sqrMagnitude > 0 ? 1f : 0f;
         speedCurve += Time.deltaTime * (moveAmount * bobExaggeration);
@@ -90,14 +90,14 @@ public class SwayNBobScript : MonoBehaviour
         bobPosition.z = -(walkInput.y * travelLimit.z);
     }
 
-    void BobRotation()
+    private void BobRotation()
     {
         bobEulerRotation.x = (walkInput != Vector2.zero ? multiplier.x * (Mathf.Sin(2 * speedCurve)) : multiplier.x * (Mathf.Sin(2 * speedCurve) / 2));
         bobEulerRotation.y = (walkInput != Vector2.zero ? multiplier.y * curveCos : 0);
         bobEulerRotation.z = (walkInput != Vector2.zero ? multiplier.z * curveCos * walkInput.x : 0);
     }
 
-    void CompositePositionRotation()
+    private void CompositePositionRotation()
     {
         Vector3 finalPos = swayPos + bobPosition;
 

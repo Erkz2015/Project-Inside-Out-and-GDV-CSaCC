@@ -13,10 +13,10 @@ public class ActionManager : MonoBehaviour
     public GameObject building;
     public GameObject monster;
     public GameObject menu;
-    public GameObject TitleText;
-    public GameObject EndText;
-    public GameObject GameOverText;
-    public GameObject StartButton;
+    public GameObject titleText;
+    public GameObject endText;
+    public GameObject gameOverText;
+    public GameObject startButton;
     public GameObject dust;
     public GameObject playerLightOne;
     public GameObject playerLightTwo;
@@ -121,11 +121,11 @@ public class ActionManager : MonoBehaviour
 
         menu.SetActive(true);
 
-        EndText.SetActive(false);
-        GameOverText.SetActive(false);
+        endText.SetActive(false);
+        gameOverText.SetActive(false);
 
-        TitleText.SetActive(true);
-        StartButton.SetActive(true);
+        titleText.SetActive(true);
+        startButton.SetActive(true);
 
         dust.SetActive(true);
 
@@ -143,11 +143,11 @@ public class ActionManager : MonoBehaviour
 
         menu.SetActive(true);
 
-        TitleText.SetActive(false);
-        StartButton.SetActive(false);
+        titleText.SetActive(false);
+        startButton.SetActive(false);
 
-        EndText.SetActive(true);
-        GameOverText.SetActive(false);
+        endText.SetActive(true);
+        gameOverText.SetActive(false);
 
         playerMovement.enabled = false;
 
@@ -166,11 +166,11 @@ public class ActionManager : MonoBehaviour
 
         menu.SetActive(true);
 
-        TitleText.SetActive(false);
-        StartButton.SetActive(false);
+        titleText.SetActive(false);
+        startButton.SetActive(false);
 
-        EndText.SetActive(false);
-        GameOverText.SetActive(true);
+        endText.SetActive(false);
+        gameOverText.SetActive(true);
 
         playerMovement.enabled = false;
 

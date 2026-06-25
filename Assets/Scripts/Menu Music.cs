@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class MenuMusic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public StudioEventEmitter MusicEmitter;
+    public StudioEventEmitter musicEmitter;
     public string pitch = "Pitch";
 
     public float minParameter = 0f;
@@ -21,7 +21,7 @@ public class MenuMusic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         currentValue = minParameter;
         startValue = minParameter;
         targetValue = minParameter;
-        MusicEmitter.SetParameter(pitch, currentValue);
+        musicEmitter.SetParameter(pitch, currentValue);
     }
 
     void Update()
@@ -33,7 +33,7 @@ public class MenuMusic : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         float t = Mathf.Clamp01(timer / duration);
 
         currentValue = Mathf.Lerp(startValue, targetValue, t);
-        MusicEmitter.SetParameter(pitch, currentValue);
+        musicEmitter.SetParameter(pitch, currentValue);
 
         if (t >= 1f)
         {

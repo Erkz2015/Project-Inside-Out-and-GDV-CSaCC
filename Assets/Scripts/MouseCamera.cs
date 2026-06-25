@@ -6,7 +6,7 @@ public class MouseCamera : MonoBehaviour
     public Vector2 rotationRange = new Vector3(70, 70);
     public float rotationSpeed = 10;
     public float dampingTime = 0.2f;
-    public bool MouseInvis;
+    public bool mouseInvis;
 
     Vector3 targetAngles;
     Vector3 followAngles;
@@ -33,13 +33,13 @@ public class MouseCamera : MonoBehaviour
     void Start()
     {
         originalRotation = transform.localRotation;
-        MouseInvis = false;
+        mouseInvis = false;
         SwitchMouseVisibility();
     }
 
     void Update()
     {
-        if (MouseInvis == false)
+        if (mouseInvis == false)
         {
             transform.localRotation = originalRotation;
 
@@ -67,7 +67,7 @@ public class MouseCamera : MonoBehaviour
         }
     }
 
-    void HandleShake()
+    private void HandleShake()
     {
         if (currentShakeTime > 0)
         {
@@ -94,17 +94,17 @@ public class MouseCamera : MonoBehaviour
 
     public void SwitchMouseVisibility()
     {
-        if (MouseInvis == true)
+        if (mouseInvis == true)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            MouseInvis = false;
+            mouseInvis = false;
         }
         else
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            MouseInvis = true;
+            mouseInvis = true;
         }
     }
 }

@@ -5,21 +5,21 @@ public class ScreenHealth : MonoBehaviour
 {
     public Material screenDamageMat;
     [RangeAttribute(-1, 1)]
-    public float IntensityVignette;
+    public float intensityVignette;
 
-    public float TargetIntensity = 1f;
+    public float targetIntensity = 1f;
     [RangeAttribute(0, 1)]
     public float redValue;
 
-    public float TargetRed = 1f;
+    public float targetRed = 1f;
 
-    public int HitCounter = 5;
+    public int hitCounter = 5;
 
     public UnityEvent GameOver;
 
     void Start()
     {
-        IntensityVignette = 1f;
+        intensityVignette = 1f;
     }
 
     void OnEnable()
@@ -34,22 +34,22 @@ public class ScreenHealth : MonoBehaviour
 
     void Update()
     {
-        IntensityVignette = Mathf.Lerp(IntensityVignette, TargetIntensity, Time.deltaTime * 5f);
-        screenDamageMat.SetFloat("_Vignette_radius", IntensityVignette);
+        intensityVignette = Mathf.Lerp(intensityVignette, targetIntensity, Time.deltaTime * 5f);
+        screenDamageMat.SetFloat("_Vignette_radius", intensityVignette);
 
-        redValue = Mathf.Lerp(redValue, TargetRed, Time.deltaTime * 5f);
+        redValue = Mathf.Lerp(redValue, targetRed, Time.deltaTime * 5f);
         screenDamageMat.SetColor("_Tint", new Color(redValue, 0f, 0f, 0f));
     }
 
     public void TakingDamage()
     {
-        TargetIntensity = IntensityVignette - 0.20f;
-        HitCounter--;
+        targetIntensity = intensityVignette - 0.20f;
+        hitCounter--;
 
-        if (HitCounter <= 0)
+        if (hitCounter <= 0)
         {
             GameOver.Invoke();
-            TargetIntensity = -1f;
+            targetIntensity = -1f;
         }
     }
 }

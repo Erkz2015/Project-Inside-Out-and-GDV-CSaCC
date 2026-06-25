@@ -19,8 +19,6 @@ public class GameStateManager : MonoBehaviour
 
         CurrentState = newState;
 
-        Debug.Log($"State changed to {newState}");
-
         OnGameStateChanged?.Invoke(newState);
     }
 }

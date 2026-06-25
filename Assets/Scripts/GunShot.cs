@@ -5,8 +5,8 @@ using System;
 
 public class GunShot : MonoBehaviour
 {
-    public static event Action leftmouseActionHit;
-    public static event Action leftmouseActionMis;
+    public static event Action LeftmouseActionHit;
+    public static event Action LeftmouseActionMis;
     private bool monsterInside = false;
     [SerializeField] private string hitTag = "Monster";
 
@@ -30,11 +30,11 @@ public class GunShot : MonoBehaviour
     {
         if (monsterInside && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            leftmouseActionHit?.Invoke();
+            LeftmouseActionHit?.Invoke();
         }
         else if (!monsterInside && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            leftmouseActionMis?.Invoke();
+            LeftmouseActionMis?.Invoke();
         }
     }
 }

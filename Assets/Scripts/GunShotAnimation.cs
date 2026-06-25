@@ -5,12 +5,12 @@ using UnityEngine.InputSystem;
 public class GunShotAnimation : MonoBehaviour
 {
     [Header("Animatie")]
-    public Animator gunAnimator;      // Animator van het pistool
+    public Animator gunAnimator;      
 
     public StudioEventEmitter gunShotEmmiter;
 
     [Header("Particle System")]
-    public ParticleSystem muzzleFlash; // Jouw muzzle flash particle
+    public ParticleSystem muzzleFlash; 
     
     private bool isShooting = false;
 
@@ -24,7 +24,6 @@ public class GunShotAnimation : MonoBehaviour
 
     public void ParticlesShoot()
     {
-        // Speel de particle system af
         if (muzzleFlash != null)
         {
             muzzleFlash.Play();
@@ -45,7 +44,7 @@ public class GunShotAnimation : MonoBehaviour
         Invoke(nameof(ResetShoot), shootAnimLength);
     }
 
-    void ResetShoot()
+    private void ResetShoot()
     {
         isShooting = false;
     }

@@ -59,14 +59,14 @@ public class MainMonster : MonoBehaviour, IMonsterContext
 
     private void OnEnable()
     {
-        GunShot.leftmouseActionHit += HurtMonster;
-        GunShot.leftmouseActionMis += MissMonster;
+        GunShot.LeftmouseActionHit += HurtMonster;
+        GunShot.LeftmouseActionMis += MissMonster;
     }
 
     private void OnDisable()
     {
-        GunShot.leftmouseActionHit -= HurtMonster;
-        GunShot.leftmouseActionMis -= MissMonster;
+        GunShot.LeftmouseActionHit -= HurtMonster;
+        GunShot.LeftmouseActionMis -= MissMonster;
     }
 
     // STATE MACHINE WRAPPER

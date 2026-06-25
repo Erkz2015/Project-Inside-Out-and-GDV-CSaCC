@@ -2,6 +2,7 @@ using UnityEngine;
 
 public interface IMonsterContext
 {
+    // gesoorteert op functie voor makkelijk aanpassen van interface
     // movement
     float Angle { get; set; }
     float RotationSpeed { get; set; }

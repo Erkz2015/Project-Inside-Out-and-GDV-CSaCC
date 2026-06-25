@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public int floorType = 1;
     public bool isplayingStepSound = false;
 
-    public StudioEventEmitter FootStepEmmiterInside;
-    public StudioEventEmitter FootStepEmmiterOutside;
+    public StudioEventEmitter footStepEmmiterInside;
+    public StudioEventEmitter footStepEmmiterOutside;
 
     // Camera reference
     public Transform cameraTransform;
@@ -55,15 +55,15 @@ public class PlayerMovement : MonoBehaviour
                 isplayingStepSound = true;
 
                 if (floorType == 1)
-                    FootStepEmmiterInside.Play();
+                    footStepEmmiterInside.Play();
                 else if (floorType == 2)
-                    FootStepEmmiterOutside.Play();
+                    footStepEmmiterOutside.Play();
             }
             else if (!isMoving && isplayingStepSound)
             {
                 isplayingStepSound = false;
-                FootStepEmmiterInside.Stop();
-                FootStepEmmiterOutside.Stop();
+                footStepEmmiterInside.Stop();
+                footStepEmmiterOutside.Stop();
             }
         }
 

@@ -992,7 +992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672fd077e49c5104a9e5c7f582252aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayOminusSound
-  OminousSoundEmmiter: {fileID: 199120696}
+  ominousSoundEmmiter: {fileID: 199120696}
+  triggerTag: Player
 --- !u!1 &350923944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,8 +1793,8 @@ MonoBehaviour:
   currentWalkSpeed: 5
   floorType: 1
   isplayingStepSound: 0
-  FootStepEmmiterInside: {fileID: 860022561}
-  FootStepEmmiterOutside: {fileID: 651441576}
+  footStepEmmiterInside: {fileID: 860022561}
+  footStepEmmiterOutside: {fileID: 651441576}
   cameraTransform: {fileID: 1184486895}
   isJumping: 0
   isGrounded: 0
@@ -7227,10 +7228,10 @@ MonoBehaviour:
   building: {fileID: 977462977}
   monster: {fileID: 636679757}
   menu: {fileID: 1884183986}
-  TitleText: {fileID: 1621808690}
-  EndText: {fileID: 352676892}
-  GameOverText: {fileID: 1135670615}
-  StartButton: {fileID: 988484083}
+  titleText: {fileID: 1621808690}
+  endText: {fileID: 352676892}
+  gameOverText: {fileID: 1135670615}
+  startButton: {fileID: 988484083}
   dust: {fileID: 666573724}
   playerLightOne: {fileID: 196385737}
   playerLightTwo: {fileID: 1915021091}
@@ -7571,7 +7572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9449d3e4940ea2d44a3d3f2c88055c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuMusic
-  MusicEmitter: {fileID: 18474954}
+  musicEmitter: {fileID: 18474954}
   pitch: Pitch
   minParameter: 0
   maxParameter: 8
@@ -9103,7 +9104,7 @@ MonoBehaviour:
   rotationRange: {x: 60, y: 70}
   rotationSpeed: 15
   dampingTime: 0.15
-  MouseInvis: 0
+  mouseInvis: 0
   shakeDuration: 0.15
   shakeRotationStrength: 3
 --- !u!1 &1192827128
@@ -11377,11 +11378,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenHealth
   screenDamageMat: {fileID: -876546973899608171, guid: 483b2a80c12faf249b95cb86d6f4dad6, type: 3}
-  IntensityVignette: 0
-  TargetIntensity: 1
+  intensityVignette: 0
+  targetIntensity: 1
   redValue: 0
-  TargetRed: 1
-  HitCounter: 5
+  targetRed: 1
+  hitCounter: 5
   GameOver:
     m_PersistentCalls:
       m_Calls:
@@ -11429,7 +11430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9449d3e4940ea2d44a3d3f2c88055c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuMusic
-  MusicEmitter: {fileID: 18474954}
+  musicEmitter: {fileID: 0}
   pitch: Pitch
   minParameter: 0
   maxParameter: 8
